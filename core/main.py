@@ -12,7 +12,7 @@ from PIL import ImageFont
 import print_func as pf
 import game_manager as GM
 
-import Sprites
+import sprites
 
 if platform.system() == 'Windows':
     import input_manager_win as IM
@@ -25,28 +25,28 @@ FONT_CAVIAR_DREAM = ImageFont.truetype("../resources/fonts/CaviarDreams.ttf", 15
 
 currentTextY = 0
 
-gameManager = GM.GameManager.instance()
+GAME_MANAGER = GM.GameManager.instance()
 # printManager = pf.PrintManager(gameManager)
-
-display = gameManager.display
-
-draw = gameManager.draw
+display = GAME_MANAGER.display
+#draw = GAME_MANAGER.draw
 
 # keyboard = IM.Keyboard()
 button = IM.Keyboard()
 
 
 # initialize display
+"""
 def init_display():
     display.begin()
     display.clear()
 
-    display.image(gameManager.image)
+    display.image(game_manager.image)
+"""
 
 def init_game():
-    gameManager.initGame()
+    GAME_MANAGER.initGame()
 
-PLAYER = Sprites.Player()
+#PLAYER = Sprites.Player()
 
 LOGO_IMAGE = Image.open('../resources/logo/PlaneteLogo.ppm').convert('1')
 LOGO_IMAGE.resize((128, 64))
@@ -55,21 +55,23 @@ def main():
     # draw.text((2, 2), "Hello, Wolrd!", font=font_caviar_dream, fill=255)
     # display.clear()
     while True:
-        gameManager.clear()
+        with 
 
-        gameManager.levelRender()
+        GAME_MANAGER.levelRender()
         
-        button_state = button.getButtonState()
+        GAME_MANAGER.playerRender()
         
-        PLAYER.update()
+        button_state = button.get_button_state()
+        
+        #PLAYER.update()
 
-        display.image(gameManager.image)
+        #display.image(game_manager.image)
         # display.image(logo_image)
         
-        display.display()
+        # display.display()
 
 
 if __name__ == "__main__":
-    init_display()
+    # init_display()
     init_game()
     main()

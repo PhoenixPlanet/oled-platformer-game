@@ -1,10 +1,16 @@
-import GameManager
+import platform
+
+import game_manager
 import data
-import InputManager as IM
+
+if platform.system() == 'Windows':
+    import input_manager_win as IM
+elif platform.system() == 'Linux':
+    import input_manager_linux as IM
 
 class SpriteBase:
     def __init__(self):
-        self.gameManager = GameManager.GameManager.instance()
+        self.gameManager = game_manager.GameManager.instance()
         self.input = IM.Keyboard()
         self.buttonState = {}
 
@@ -70,7 +76,7 @@ class Player(SpriteUnderGravity):
     def __init__(self):
         super().__init__()
         
-        self.size = data.playerSize
+        self.size = data.player_size
 
     def update(self):
         super().update()

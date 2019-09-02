@@ -1,6 +1,6 @@
 from algorithms import DesignPattern
 
-class SysKeyboard(DesignPattern.SingletonInastance):
+class SysKeyboard(DesignPattern.SingletonInstance):
     def __init__(self):
         import termios, os, sys, fcntl
 	
@@ -100,7 +100,7 @@ class SysKeyboard(DesignPattern.SingletonInastance):
         return result
     """
 
-class CurseKeyboard(DesignPattern.SingletonInastance):
+class CurseKeyboard(DesignPattern.SingletonInstance):
     def __init__(self):
         import curses
 
@@ -137,7 +137,7 @@ class CurseKeyboard(DesignPattern.SingletonInastance):
             pass
 
 
-class GPIOButton(DesignPattern.SingletonInastance):
+class GPIOButton(DesignPattern.SingletonInstance):
     def __init__(self):
         import RPi.GPIO as GPIO
         

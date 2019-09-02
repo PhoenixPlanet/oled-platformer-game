@@ -27,3 +27,12 @@ class PygameButton(DesignPattern.SingletonInstance):
             return buttonstate[button]
         else:
             return None
+        
+def Keyboard(keyboard_type=1):
+    """
+    keyboard_type 1: curse keyboard
+    keyboard_type 2: system keyboard
+    keyboard_type 3: GPIO Buttons
+    """
+    if keyboard_type == 1:
+        return PygameButton.instance()

@@ -1,25 +1,28 @@
-from PIL import Image
-from PIL import ImageDraw
 from PIL import ImageFont
 
+
 class PrintManager:
+    """
+    Print Manager
+    """
+    
     def __init__(self, gameManager):
         self.currentCursor = [0, 0]
         self.nextLineCursor = [0, 0]
         self.gameManager = gameManager
 
-    def printText(self, text, fontSize, align=1, font="./fonts/CaviarDreams.ttf", screen=(128, 64), startY=-1, margin=2):
+    def print_text(self, text, fontSize, align=1, font="./fonts/CaviarDreams.ttf", screen=(128, 64), start_y=-1, margin=2):
         """
         print test with PIL library
         
         return y position of the next line
         """
 
-        if startY == -1:
-            startY = self.nextLineCursor[1]
-        elif startY < -1:
-            self.nextLineCursor[1] = self.nextLineCursor[1] - startY
-            startY = self.nextLineCursor[1]
+        if start_y == -1:
+            start_y = self.nextLineCursor[1]
+        elif start_y < -1:
+            self.nextLineCursor[1] = self.nextLineCursor[1] - start_y
+            start_y = self.nextLineCursor[1]
         
         font_data = ImageFont.truetype(font, fontSize)
         
@@ -55,26 +58,26 @@ class PrintManager:
         else:
             splitedText.append(text)
 
-        textY = startY
-        for i in range(len(splitedText)):
+        text_y = start_y
+        for i, item in enumerate(splitedText):
             # print(splitedText[i])
             if align == 1:
-                self.gameManager.draw.text((margin, textY), splitedText[i], font=font_data, fill=255)
+                self.gameManager.draw.text((margin, text_y), item, font=font_data, fill=255)
                 
             elif align == 2:
-                splitedTextLen = font_data.font.getsize(splitedText[i])[0][0]
-                startX = screen[0] / 2 - splitedTextLen / 2
-                self.gameManager.draw.text((startX, textY), splitedText[i], font=font_data, fill=255)
+                splited_text_len = font_data.font.getsize(item)[0][0]
+                start_x = screen[0] / 2 - splited_text_len / 2
+                self.gameManager.draw.text((start_x, text_y), item, font=font_data, fill=255)
             
             elif align == 3:
-                splitedTextLen = font_data.font.getsize(splitedText[i])[0][0]
-                startX = screen[0] - splitedTextLen
-                self.gameManager.draw.text((startX, textY), splitedText[i], font=font_data, fill=255)
+                splited_text_len = font_data.font.getsize(item)[0][0]
+                start_x = screen[0] - splited_text_len
+                self.gameManager.draw.text((start_x, text_y), item, font=font_data, fill=255)
 
-            textY += ascent + descent
+            text_y += ascent + descent
 
-        self.nextLineCursor = [margin, textY]
-        self.currentCursor = [startX + splitedTextLen, textY - ascent - descent]
+        self.nextLineCursor = [margin, text_y]
+        self.currentCursor = [start_x + splited_text_len, text_y - ascent - descent]
             
-        return textY
+        return text_y
 
