@@ -1,6 +1,7 @@
 import platform
 
 import game_manager
+from renderer import Renderer
 import data
 
 if platform.system() == 'Windows':
@@ -11,6 +12,8 @@ elif platform.system() == 'Linux':
 class SpriteBase:
     def __init__(self):
         self.gameManager = game_manager.GameManager.instance()
+        self.renderer = Renderer.instance()
+
         self.input = IM.Keyboard()
         self.buttonState = {}
 
@@ -41,11 +44,11 @@ class SpriteBase:
         self.centery = self.y + self.size[1] / 2
 
     def get_button_input(self):
-        self.buttonState = self.input.getButtonState()
+        self.buttonState = self.input.get_button_state()
 
-    def draw(self, outline=255, fill=255):
-        self.gameManager.draw.rectangle((self.x, self.y, self.x + self.size[0], self.y + self.size[1]), \
-                outline=outline, fill=fill)
+    def draw(self, outline="white", fill="white"):
+        self.renderer.add("rectangle", (self.x, self.y, self.x + self.size[0], self.y + self.size[1]), \
+                _outline=outline, _fill=fill)
 
     def update(self):
         self.xvel += self.xacc
@@ -99,6 +102,6 @@ class Player(SpriteUnderGravity):
 
         else:
             self.xvel = 0
-
+        
         self.draw()
 

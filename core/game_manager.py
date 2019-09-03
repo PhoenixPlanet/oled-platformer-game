@@ -6,23 +6,26 @@ import print_func as pf
 from algorithms import DesignPattern
 from demo_opts import get_device
 
+from renderer import Renderer
+
 
 class GameManager(DesignPattern.SingletonInstance):
     def __init__(self):
 
         # pin configuration (for raspberry pi i2c)
         self.RST = 24
-        
-        # get display
-        self.display = get_device()
+
+        self.renderer = Renderer.instance()
+
+        self.display = self.renderer.display
         
         self.s_width = self.display.width
         self.s_height = self.display.height
         self.screen = (self.s_width, self.s_height)
         
         # get drawing object
-        with canvas(self.display) as draw:
-            self.draw = draw
+        self.draw_func = []
+        self.draw_args = []
         
         # game data
         self.nemo_pos = [data.DEFAULT_X, data.DEFAULT_Y]
@@ -58,11 +61,17 @@ class GameManager(DesignPattern.SingletonInstance):
         self.jumpState = 0
 
     def levelRender(self):
-        self.draw.line([(0, data.groundY), (self.s_width, data.groundY)], fill="white")
-        
+        self.renderer.add("line", ([(0, data.groundY), (self.s_width, data.groundY)]), _fill="white")
+
     def playerRender(self):
-        self.draw.rectangle((self.nemo_pos[0]-data.player_size[0]/2, self.nemo_pos[1]-data.player_size[1]/2, \
-                    self.nemo_pos[0]+data.player_size[0]/2, self.nemo_pos[1]+data.player_size[1]/2), outline="white", fill="white")
+        self.renderer.add("rectangle", (self.nemo_pos[0]-data.player_size[0]/2, self.nemo_pos[1]-data.player_size[1]/2, \
+                    self.nemo_pos[0]+data.player_size[0]/2, self.nemo_pos[1]+data.player_size[1]/2), _outline="white", _fill="white")
+    
+    def init_canvas(self):
+        self.renderer.init_renderer()
+
+    def render(self):
+        self.renderer.render()
 
     def clear(self):
         self.display.clear()
