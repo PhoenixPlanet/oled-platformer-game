@@ -1,7 +1,6 @@
 """
 Main python file of game
 """
-import time
 import pygame
 
 import platform
@@ -10,7 +9,8 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
-from luma.core.render import canvas
+from renderer import Renderer
+renderer = Renderer.instance()
 
 # import data
 import print_func as pf
@@ -22,7 +22,7 @@ import sprites
 CLOCK = pygame.time.Clock()
 
 # set font
-FONT_CAVIAR_DREAM = ImageFont.truetype("../resources/fonts/CaviarDreams.ttf", 15)
+# FONT_CAVIAR_DREAM = ImageFont.truetype("../resources/fonts/CaviarDreams.ttf", 15)
 
 GAME_MANAGER = GM.GameManager.instance()
 
@@ -31,8 +31,7 @@ def init_game():
 
 PLAYER = sprites.Player()
 
-LOGO_IMAGE = Image.open('../resources/logo/PlaneteLogo.ppm').convert('1')
-LOGO_IMAGE.resize((128, 64))
+LOGO_IMAGE = Image.open('../resources/logo/starwars.png')
 
 def main():
     while True:

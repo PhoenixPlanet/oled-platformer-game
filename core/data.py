@@ -27,7 +27,7 @@ draw = ImageDraw.Draw(image)
 DEFAULT_Y = 47
 DEFAULT_X = 64
 
-player_size = (4, 4)
+player_size = (50, 50)
 gravity = 2
 jumpF = -5
 

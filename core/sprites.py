@@ -1,5 +1,7 @@
 import platform
 
+from PIL import Image
+
 import game_manager
 from renderer import Renderer
 import data
@@ -19,7 +21,7 @@ class SpriteBase:
 
         self.size = (1, 1)
 
-        self.x = 20
+        self.x = 0
         self.y = data.groundY - self.size[1]
         self.set_center()
 
@@ -46,9 +48,8 @@ class SpriteBase:
     def get_button_input(self):
         self.buttonState = self.input.get_button_state()
 
-    def draw(self, outline="white", fill="white"):
-        self.renderer.add("rectangle", (self.x, self.y, self.x + self.size[0], self.y + self.size[1]), \
-                _outline=outline, _fill=fill)
+    def draw(self, type, args, outline="white", fill="white"):
+        self.renderer.add(type, args, _fill="white")
 
     def update(self):
         self.xvel += self.xacc
@@ -81,6 +82,9 @@ class Player(SpriteUnderGravity):
         
         self.size = data.player_size
 
+        self.LOGO_IMAGE = Image.open('../resources/logo/PlaneteLogo.png')
+        self.LOGO_IMAGE = self.LOGO_IMAGE.resize(self.size)
+
     def update(self):
         super().update()
         
@@ -103,5 +107,5 @@ class Player(SpriteUnderGravity):
         else:
             self.xvel = 0
         
-        self.draw()
+        self.draw("bitmap", ((self.x, self.y), self.LOGO_IMAGE), fill="white")
 

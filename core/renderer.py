@@ -24,6 +24,9 @@ class Renderer(DesignPattern.SingletonInstance):
         self.draw_funcs.append(func)
         self.draw_args.append(args)
         self.draw_colors.append(dict(outline=_outline, fill=_fill))
+
+    def bitmap(self, draw, _fill, args):
+        draw.bitmap(args[0], args[1], fill=_fill)
         
     def render(self):
         with canvas(self.display) as draw:
@@ -32,4 +35,6 @@ class Renderer(DesignPattern.SingletonInstance):
                     draw.rectangle(self.draw_args[i], outline=self.draw_colors[i]["outline"], fill=self.draw_colors[i]["fill"])
                 elif func == "line":
                     draw.line(self.draw_args[i], fill=self.draw_colors[i]["fill"])
+                elif func == "bitmap":
+                    self.bitmap(draw, self.draw_colors[i]["fill"], self.draw_args[i])
                     
