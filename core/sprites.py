@@ -16,7 +16,7 @@ class SpriteBase:
         self.gameManager = game_manager.GameManager.instance()
         self.renderer = Renderer.instance()
 
-        self.input = IM.Keyboard()
+        self.input = IM.Keyboard(1)
         self.buttonState = {}
 
         self.size = (1, 1)

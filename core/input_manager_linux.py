@@ -110,6 +110,7 @@ class CurseKeyboard(DesignPattern.SingletonInstance):
         curses.cbreak()
         self.screen.nodelay(True)
         self.screen.keypad(True)
+        self.button_id = ['d', 'a', 'w', 'q']
 
     def get(self):
         return self.screen.getch()
@@ -121,6 +122,23 @@ class CurseKeyboard(DesignPattern.SingletonInstance):
             return chr(char)
         else:
             return ""
+        
+    def get_button_state(self, button=None):
+        b = self.getToChr()
+
+        isRight = (b == self.button_id[0])
+        isLeft = (b == self.button_id[1])
+        isJump = (b == self.button_id[2])
+        isSetup = (b == self.button_id[3])
+
+        buttonState = dict(right = isRight, left = isLeft, jump = isJump, setup = isSetup)
+
+        if button == None:
+            return buttonState
+        elif button in buttonState.keys():
+            return buttonState[button]
+        else:
+            return None
 
     def close(self):
         import curses
@@ -141,6 +159,8 @@ class GPIOButton(DesignPattern.SingletonInstance):
     def __init__(self):
         import RPi.GPIO as GPIO
         
+        GPIO.setmode(GPIO.BCM)
+
         # GPIO.BCM
         self.rightButton = 17
         self.leftButton = 22
@@ -149,11 +169,10 @@ class GPIOButton(DesignPattern.SingletonInstance):
 
         self.buttonPins = [self.rightButton, self.leftButton, self.jumpButton, self.setupButton]
         
-        # pull up resister
         for i in self.buttonPins:
             GPIO.setup(i, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-    def getButtonState(self, button=None):
+    def get_button_state(self, button=None):
         import RPi.GPIO as GPIO
 
         isRight = not GPIO.input(self.rightButton)
