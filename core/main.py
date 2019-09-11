@@ -1,28 +1,18 @@
 """
 Main python file of game
 """
+import platform
 import pygame
 
-import platform
-
 from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
 
-from renderer import Renderer
-renderer = Renderer.instance()
-
-# import data
-import print_func as pf
 import game_manager as GM
-
 import sprites
+from renderer import Renderer
 
+RENDERER = Renderer.instance()
 
 CLOCK = pygame.time.Clock()
-
-# set font
-# FONT_CAVIAR_DREAM = ImageFont.truetype("../resources/fonts/CaviarDreams.ttf", 15)
 
 GAME_MANAGER = GM.GameManager.instance()
 
