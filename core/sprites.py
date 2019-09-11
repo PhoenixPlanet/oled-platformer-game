@@ -25,10 +25,8 @@ class SpriteBase:
         self.y = data.groundY - self.size[1]
         self.set_center()
 
-        self.xvel = 0
-        self.yvel = 0
-        self.xacc = 0
-        self.yacc = 0
+        self.vel = dict(x=0, y=0)
+        self.acc = dict(x=0, y=0)
 
         self.jumpState = 0
 
@@ -48,14 +46,14 @@ class SpriteBase:
     def get_button_input(self):
         self.buttonState = self.input.get_button_state()
 
-    def draw(self, type, args, outline="white", fill="white"):
-        self.renderer.add(type, args, _fill="white")
+    def draw(self, kind, args, outline="white", fill="white"):
+        self.renderer.add(kind, args, _outline=outline, _fill=fill)
 
     def update(self):
-        self.xvel += self.xacc
-        self.yvel += self.yacc
+        self.vel["x"] += self.acc["x"]
+        self.vel["y"] += self.acc["y"]
         
-        self.move(self.xvel, self.yvel)
+        self.move(self.vel["x"], self.vel["y"])
 
 
 class SpriteUnderGravity(SpriteBase):
@@ -64,9 +62,9 @@ class SpriteUnderGravity(SpriteBase):
     
     def check_ground(self):
         if self.y < data.groundY - self.size[1] - 1:
-            self.yvel += 1
+            self.vel["y"] += 1
         else:
-            self.yvel = 0
+            self.vel["y"] = 0
             self.go_to(self.x, data.groundY - self.size[1] - 1)
             self.jumpState = 0
 
@@ -95,17 +93,17 @@ class Player(SpriteUnderGravity):
         if self.buttonState['jump']:
             if self.jumpState == 0:
                 self.move(0, -1)
-                self.yvel = data.jumpF
+                self.vel["y"] = data.jumpF
                 self.jumpState = 1
 
         if self.buttonState["right"] and self.x < self.gameManager.s_width - self.size[0]:
-            self.xvel = 2
+            self.vel["x"] = 2
 
         elif self.buttonState["left"] and self.x > 0:
-            self.xvel = -2
+            self.vel["x"] = -2
 
         else:
-            self.xvel = 0
+            self.vel["x"] = 0
         
         self.draw("bitmap", ((self.x, self.y), self.LOGO_IMAGE), fill="white")
 
